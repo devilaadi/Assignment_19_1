@@ -1,0 +1,23 @@
+
+--1. What are the total number of gold medal winners every year
+
+val rdd = sc.textFile("file:///home/cloudera/Desktop/Acadgild/Assignment_19/Sports_data.txt")
+
+val text = rdd.map(lines => lines.split(",")).map(arrays => (arrays(0),arrays(1),arrays(2),arrays(3),arrays(4),arrays(5),arrays(6))).toDF("firstname","lastname","sports","medal_type","age","year","country")
+
+text.registerTempTable("sports_data")
+
+sqlContext.sql("select year, count(medal_type) as Gold_medal from sports_data where medal_type = 'gold' GROUP BY year").show
+
+
+--2. How many silver medals have been won by USA in each sport
+
+val rdd = sc.textFile("file:///home/cloudera/Desktop/Acadgild/Assignment_19/Sports_data.txt")
+
+val text = rdd.map(lines => lines.split(",")).map(arrays => (arrays(0),arrays(1),arrays(2),arrays(3),arrays(4),arrays(5),arrays(6))).toDF("firstname","lastname","sports","medal_type","age","year","country")
+
+text.registerTempTable("sports_data")
+
+sqlContext.sql("select sports,count(medal_type) as Silver_Medal from sports_data where ((medal_type = 'silver') AND (country = 'USA')) GROUP BY sports").show
+
+
